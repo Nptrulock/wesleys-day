@@ -9,6 +9,7 @@
   <meta name="apple-mobile-web-app-title" content="Wesley's Day">
   <meta name="theme-color" content="#5EC8F8">
   <meta name="description" content="Wesley's daily routine">
+  <meta name="wesleys-day-version" content="WESLEY_DAY_V2_WEATHER_AUDIO">
   <title>Wesley's Day</title>
   <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
   <link rel="icon" type="image/png" sizes="180x180" href="icon-180.png">
@@ -17,7 +18,6 @@
   <style>
     :root {
       --sky: #7EC8F8;
-      --sky-deep: #4EB3F0;
       --sun: #FFE566;
       --peach: #FFD6A5;
       --coral: #FF6B6B;
@@ -47,17 +47,51 @@
       padding: calc(16px + env(safe-area-inset-top)) 20px calc(24px + env(safe-area-inset-bottom));
     }
 
-    .app {
-      max-width: 980px;
-      margin: 0 auto;
+    .app { max-width: 980px; margin: 0 auto; }
+
+    /* ---- Tap to start overlay ---- */
+    .unlock {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: linear-gradient(180deg, #6EC7F8 0%, #FFF3A8 65%, #FFD6A5 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      padding-top: calc(24px + env(safe-area-inset-top));
     }
+    .unlock.hide {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .unlock-btn {
+      border: 0;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+      font-weight: 800;
+      font-size: clamp(28px, 5.5vw, 44px);
+      padding: 32px 40px;
+      border-radius: 40px;
+      box-shadow: 0 14px 0 rgba(31, 58, 95, 0.14);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      min-width: 260px;
+    }
+    .unlock-btn:active { transform: scale(0.97); }
+    .unlock-btn .speaker { font-size: 84px; line-height: 1; }
 
     header.top {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
     }
 
     .nav-btn {
@@ -74,19 +108,13 @@
       flex-shrink: 0;
       display: grid;
       place-items: center;
-      transition: transform 0.12s ease, background 0.12s ease;
     }
-
     .nav-btn:active { transform: scale(0.92); background: var(--sun); }
 
-    .title-wrap {
-      text-align: center;
-      flex: 1;
-      min-width: 0;
-    }
+    .title-wrap { text-align: center; flex: 1; min-width: 0; }
 
     .app-title {
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 800;
       letter-spacing: 0.02em;
       color: var(--ink);
@@ -107,59 +135,68 @@
       box-shadow: 0 4px 0 #d94d4d;
       cursor: pointer;
     }
-
     .today-btn.show { display: inline-block; }
     .today-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #d94d4d; }
 
-    .days {
-      display: flex;
-      flex-direction: column;
-      gap: 22px;
-    }
+    .days { display: flex; flex-direction: column; gap: 20px; }
 
     .day-panel {
-      background: rgba(255,255,255,0.38);
+      background: rgba(255,255,255,0.42);
       border-radius: 36px;
-      padding: 22px 18px 20px;
+      padding: 18px 16px 18px;
       backdrop-filter: blur(8px);
     }
-
-    .day-panel.tomorrow-panel {
-      background: rgba(255,255,255,0.28);
-    }
+    .day-panel.tomorrow-panel { background: rgba(255,255,255,0.3); }
 
     .day-head {
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 16px;
-      cursor: pointer;
+      gap: 10px;
+      margin-bottom: 8px;
     }
 
     .day-labels { flex: 1; min-width: 0; }
 
     .when {
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
+      display: block;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--ink-soft);
       margin-bottom: 2px;
     }
 
     .day-name {
-      font-size: clamp(32px, 6vw, 48px);
-      font-weight: 800;
-      line-height: 1.1;
-      color: var(--ink);
+      display: block;
+      width: 100%;
+      text-align: left;
+      font-size: clamp(52px, 11vw, 100px);
+      font-weight: 900;
+      line-height: 0.92;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+      text-shadow: 0 3px 0 rgba(255,255,255,0.75);
+      margin: 0;
     }
 
+    .day-name.sunday { color: #F15BB5; }
+    .day-name.monday { color: #00A8E8; }
+    .day-name.tuesday { color: #9B5DE5; }
+    .day-name.wednesday { color: #12B886; }
+    .day-name.thursday { color: #3A6FF7; }
+    .day-name.friday { color: #FF7A00; }
+    .day-name.saturday { color: #E63946; }
+
     .date-line {
-      font-size: clamp(20px, 3.4vw, 26px);
-      font-weight: 600;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+      font-size: clamp(18px, 3vw, 22px);
+      font-weight: 700;
       color: var(--ink-soft);
-      margin-top: 4px;
+      margin: 8px 0 10px;
     }
 
     .speak-btn {
@@ -174,15 +211,11 @@
       cursor: pointer;
       display: grid;
       place-items: center;
-      transition: transform 0.12s ease;
     }
-
-    .speak-btn:active,
-    .speak-btn.playing {
+    .speak-btn:active, .speak-btn.playing {
       transform: scale(0.94);
       background: #FFE566;
     }
-
     .speak-btn.playing { animation: pulse 0.8s ease infinite; }
 
     @keyframes pulse {
@@ -190,29 +223,53 @@
       50% { transform: scale(1.08); }
     }
 
-    .cards {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
+    .weather {
+      display: none;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+      background: rgba(255,255,255,0.7);
+      border-radius: 22px;
+      padding: 8px 12px 8px 8px;
+      margin: 0 0 14px;
+      box-shadow: 0 4px 0 rgba(31, 58, 95, 0.08);
     }
+    .weather.show { display: flex; }
+    .wx-emoji {
+      border: 0;
+      background: transparent;
+      font-size: 42px;
+      line-height: 1;
+      width: 56px;
+      height: 56px;
+      cursor: pointer;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      font-family: "Apple Color Emoji", "Noto Color Emoji", "Segoe UI Emoji", sans-serif;
+    }
+    .wx-emoji:active { transform: scale(0.92); }
+    .weather .dot {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--ink-soft);
+      padding: 0 4px;
+    }
+    .weather .word { font-size: clamp(22px, 3.4vw, 28px); }
+
+    .cards { display: flex; flex-direction: column; gap: 14px; }
 
     .card {
       display: flex;
       align-items: center;
-      gap: 18px;
+      gap: 14px;
       background: var(--card);
       border-radius: var(--radius);
-      padding: 16px 18px;
+      padding: 14px 16px;
       min-height: 108px;
       box-shadow: var(--shadow);
-      cursor: pointer;
       border: 4px solid transparent;
-      transition: transform 0.12s ease, border-color 0.12s ease;
-      -webkit-user-select: none;
     }
-
-    .card:active { transform: scale(0.98); }
-
     .card.swim { border-color: #7EC8F8; }
     .card.work { border-color: #FFD166; }
     .card.paperplane { border-color: #80E0C8; }
@@ -221,7 +278,7 @@
     .card.family, .card.daddy { border-color: #FF8FAB; }
     .card.church { border-color: #C9B6FF; }
 
-    .icon {
+    .icon-btn {
       width: 84px;
       height: 84px;
       flex-shrink: 0;
@@ -229,17 +286,54 @@
       place-items: center;
       font-size: 64px;
       line-height: 1;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      border-radius: 20px;
       transform-origin: center center;
       will-change: transform;
       font-family: "Apple Color Emoji", "Noto Color Emoji", "Segoe UI Emoji", sans-serif;
     }
+    .icon-btn:active { background: rgba(31, 58, 95, 0.06); }
 
     .label {
-      font-size: clamp(22px, 3.6vw, 30px);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 2px 0;
+      font-size: clamp(24px, 3.8vw, 32px);
       font-weight: 800;
       line-height: 1.2;
       color: var(--ink);
     }
+
+    .word {
+      display: inline-block;
+      border: 0;
+      background: transparent;
+      font: inherit;
+      font-weight: 800;
+      color: inherit;
+      cursor: pointer;
+      padding: 6px 7px;
+      margin: 0;
+      border-radius: 12px;
+      line-height: 1.15;
+    }
+    .word:active { background: rgba(31, 58, 95, 0.12); transform: scale(1.06); }
+    .when.word, .date-line .word {
+      font-size: inherit;
+      font-weight: inherit;
+      color: inherit;
+      letter-spacing: inherit;
+      text-transform: inherit;
+      padding: 2px 4px;
+    }
+    .day-name.word {
+      padding: 0;
+      background: transparent;
+    }
+    .day-name.word:active { transform: scale(0.98); opacity: 0.9; }
 
     /* Activity animations */
     .anim-splash { animation: splash 0.8s ease; }
@@ -251,7 +345,6 @@
       72% { transform: translateY(4px) scale(1.02) rotate(4deg); }
       100% { transform: translateY(0) scale(1) rotate(0); }
     }
-
     .anim-ring { animation: ring 0.9s ease; transform-origin: 50% 0%; }
     @keyframes ring {
       0%, 100% { transform: rotate(0); }
@@ -261,7 +354,6 @@
       60% { transform: rotate(-8deg); }
       76% { transform: rotate(4deg); }
     }
-
     .anim-type { animation: type 0.7s ease; }
     @keyframes type {
       0%, 100% { transform: translateY(0) scale(1); }
@@ -272,7 +364,6 @@
       68% { transform: translateY(6px) scale(0.94); }
       80% { transform: translateY(0) scale(1); }
     }
-
     .anim-fly { animation: fly 0.85s ease; }
     @keyframes fly {
       0% { transform: translate(0, 0) rotate(0) scale(1); }
@@ -280,7 +371,6 @@
       65% { transform: translate(-14px, -8px) rotate(12deg) scale(1.05); }
       100% { transform: translate(0, 0) rotate(0) scale(1); }
     }
-
     .anim-bounce { animation: bounce 0.75s ease; }
     @keyframes bounce {
       0%, 100% { transform: translateY(0) scale(1); }
@@ -289,7 +379,6 @@
       58% { transform: translateY(-12px) scale(1.08); }
       75% { transform: translateY(0) scale(1); }
     }
-
     .anim-munch { animation: munch 0.7s ease; }
     @keyframes munch {
       0%, 100% { transform: scale(1, 1); }
@@ -299,7 +388,6 @@
       60% { transform: scale(0.94, 1.1); }
       80% { transform: scale(1.06, 0.96); }
     }
-
     .anim-hug { animation: hug 0.8s ease; }
     @keyframes hug {
       0%, 100% { transform: scale(1) rotate(0); }
@@ -307,23 +395,39 @@
       50% { transform: scale(1.16) rotate(7deg); }
       75% { transform: scale(1.24) rotate(-3deg); }
     }
+    .anim-weather { animation: weatherwiggle 0.8s ease; }
+    @keyframes weatherwiggle {
+      0%, 100% { transform: rotate(0) scale(1); }
+      20% { transform: rotate(-14deg) scale(1.15); }
+      40% { transform: rotate(12deg) scale(1.1); }
+      60% { transform: rotate(-8deg) scale(1.12); }
+      80% { transform: rotate(6deg) scale(1.05); }
+    }
 
     @media (orientation: landscape) and (min-width: 860px) {
-      .days { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
-      .day-name { font-size: 40px; }
+      .days { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+      .day-name { font-size: clamp(44px, 6.2vw, 76px); }
       .card { min-height: 96px; }
-      .icon { width: 76px; height: 76px; font-size: 56px; }
+      .icon-btn { width: 76px; height: 76px; font-size: 56px; }
     }
 
     @media (max-width: 420px) {
       .nav-btn { width: 56px; height: 56px; font-size: 30px; }
       .speak-btn { width: 64px; height: 64px; font-size: 32px; }
-      .icon { width: 72px; height: 72px; font-size: 52px; }
-      .card { min-height: 96px; gap: 12px; padding: 12px 14px; }
+      .icon-btn { width: 72px; height: 72px; font-size: 52px; }
+      .card { min-height: 96px; gap: 10px; padding: 12px 12px; }
+      .day-name { font-size: clamp(44px, 14vw, 72px); }
     }
   </style>
 </head>
 <body>
+  <div class="unlock" id="unlock">
+    <button type="button" class="unlock-btn" id="unlockBtn">
+      <span class="speaker" aria-hidden="true">🔊</span>
+      <span>Tap to start 🔊</span>
+    </button>
+  </div>
+
   <div class="app">
     <header class="top">
       <button class="nav-btn" id="prevBtn" aria-label="Previous day">◀</button>
@@ -337,51 +441,52 @@
   </div>
 
   <script>
+    /* WESLEY_DAY_V2_WEATHER_AUDIO */
     /* ============================================================
        WEEKLY SCHEDULE — easy to edit
        timezone: America/Detroit
-       Each activity:
-         icon, label, speech, sound, anim, color
-         sound: splash | bell | keyboard | whoosh | chime | munch | happy
-         anim:  splash | ring  | type     | fly    | bounce | munch | hug
+       Each activity: icon, label, speech, sound, anim, color
+       sound: splash | bell | keyboard | whoosh | chime | munch | happy
+       anim:  splash | ring  | type     | fly    | bounce | munch | hug
        ============================================================ */
     const TIMEZONE = "America/Detroit";
 
     const SCHEDULE = {
       sunday: [
-        { icon: "🏊", label: "Goldfish Swim School", speech: "You have Goldfish Swim School.", sound: "splash", anim: "splash", color: "swim" }
+        { icon: "🏊", label: "Swim school", speech: "Swim school", sound: "splash", anim: "splash", color: "swim" }
       ],
       monday: [
-        { icon: "💻", label: "Daddy works", speech: "Daddy works.", sound: "keyboard", anim: "type", color: "work" },
-        { icon: "✈️", label: "Paper Plane Therapies", speech: "You have Paper Plane Therapies.", sound: "whoosh", anim: "fly", color: "paperplane" }
+        { icon: "💻", label: "Daddy works", speech: "Daddy works", sound: "keyboard", anim: "type", color: "work" },
+        { icon: "✈️", label: "Paper Plane therapy", speech: "Paper Plane therapy", sound: "whoosh", anim: "fly", color: "paperplane" }
       ],
       tuesday: [
-        { icon: "💻", label: "Daddy works", speech: "Daddy works.", sound: "keyboard", anim: "type", color: "work" },
-        { icon: "🧑‍🍼", label: "Babysitter", speech: "You have a babysitter.", sound: "chime", anim: "bounce", color: "babysitter" }
+        { icon: "💻", label: "Daddy works", speech: "Daddy works", sound: "keyboard", anim: "type", color: "work" },
+        { icon: "🧑‍🍼", label: "Babysitter", speech: "Babysitter", sound: "chime", anim: "bounce", color: "babysitter" }
       ],
       wednesday: [
-        { icon: "💻", label: "Daddy works", speech: "Daddy works.", sound: "keyboard", anim: "type", color: "work" },
-        { icon: "🥄", label: "Feeding Therapy", speech: "You have Feeding Therapy.", sound: "munch", anim: "munch", color: "feeding" },
-        { icon: "🧑‍🍼", label: "Babysitter", speech: "You have a babysitter.", sound: "chime", anim: "bounce", color: "babysitter" }
+        { icon: "💻", label: "Daddy works", speech: "Daddy works", sound: "keyboard", anim: "type", color: "work" },
+        { icon: "🥄", label: "Feeding therapy", speech: "Feeding therapy", sound: "munch", anim: "munch", color: "feeding" },
+        { icon: "🧑‍🍼", label: "Babysitter", speech: "Babysitter", sound: "chime", anim: "bounce", color: "babysitter" }
       ],
       thursday: [
-        { icon: "💻", label: "Daddy works", speech: "Daddy works.", sound: "keyboard", anim: "type", color: "work" },
-        { icon: "👨‍👩‍👦", label: "With Mommy and Daddy after work", speech: "After work you are with Mommy and Daddy.", sound: "happy", anim: "hug", color: "family" }
+        { icon: "💻", label: "Daddy works", speech: "Daddy works", sound: "keyboard", anim: "type", color: "work" },
+        { icon: "👨‍👩‍👦", label: "Mommy and Daddy", speech: "Mommy and Daddy", sound: "happy", anim: "hug", color: "family" }
       ],
       friday: [
-        { icon: "💻", label: "Daddy works", speech: "Daddy works.", sound: "keyboard", anim: "type", color: "work" },
-        { icon: "👨", label: "With Daddy after work", speech: "After work you are with Daddy.", sound: "happy", anim: "hug", color: "daddy" }
+        { icon: "💻", label: "Daddy works", speech: "Daddy works", sound: "keyboard", anim: "type", color: "work" },
+        { icon: "👨", label: "With Daddy", speech: "With Daddy", sound: "happy", anim: "hug", color: "daddy" }
       ],
       saturday: [
-        { icon: "⛪", label: "Impact Church", speech: "You have Impact Church.", sound: "bell", anim: "ring", color: "church" }
+        { icon: "⛪", label: "Church", speech: "Church", sound: "bell", anim: "ring", color: "church" }
       ]
     };
 
-    const WEEKDAYS = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
-    const WEEKDAY_LABELS = { sunday: "Sunday", monday: "Monday", tuesday: "Tuesday", wednesday: "Wednesday", thursday: "Thursday", friday: "Friday", saturday: "Saturday" };
+    const WEEKDAYS = ["sunday","monday","tuesday","wednesday","thursday","friday","saturday"];
+    const WEEKDAY_LABELS = { sunday:"Sunday", monday:"Monday", tuesday:"Tuesday", wednesday:"Wednesday", thursday:"Thursday", friday:"Friday", saturday:"Saturday" };
     const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
-    const SOUND_MS = { splash: 700, bell: 900, keyboard: 650, whoosh: 700, chime: 750, munch: 650, happy: 850, intro: 500 };
+    const WEATHER_URL = "https://api.open-meteo.com/v1/forecast?latitude=42.9339&longitude=-85.3420&daily=weather_code,temperature_2m_max,temperature_2m_min&temperature_unit=fahrenheit&timezone=America%2FDetroit";
+    const WEATHER_CACHE_KEY = "wesleys-day-weather-v1";
 
     /* ---------- dates in America/Detroit ---------- */
     function todayKey() {
@@ -393,10 +498,7 @@
     function addDays(key, n) {
       const [y, m, d] = key.split("-").map(Number);
       const dt = new Date(Date.UTC(y, m - 1, d + n, 12, 0, 0));
-      const yy = dt.getUTCFullYear();
-      const mm = String(dt.getUTCMonth() + 1).padStart(2, "0");
-      const dd = String(dt.getUTCDate()).padStart(2, "0");
-      return yy + "-" + mm + "-" + dd;
+      return dt.getUTCFullYear() + "-" + String(dt.getUTCMonth() + 1).padStart(2, "0") + "-" + String(dt.getUTCDate()).padStart(2, "0");
     }
 
     function infoFor(key) {
@@ -404,8 +506,7 @@
       const dt = new Date(Date.UTC(y, m - 1, d, 12, 0, 0));
       const weekday = WEEKDAYS[dt.getUTCDay()];
       return {
-        key,
-        weekday,
+        key, weekday,
         dayName: WEEKDAY_LABELS[weekday],
         dateLine: MONTHS[m - 1] + " " + d,
         activities: SCHEDULE[weekday] || []
@@ -419,177 +520,301 @@
       return "This day";
     }
 
-    /* ---------- audio (Web Audio API, synthesized) ---------- */
+    /* ---------- WAV + HTML5 audio (iPad silent-switch friendly) ---------- */
+    const SR = 22050;
+    const audioEls = {};
     let audioCtx = null;
-    let master = null;
+    let audioReady = false;
 
-    function ensureAudio() {
+    function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+
+    function encodeWav(samples) {
+      const n = samples.length;
+      const buf = new ArrayBuffer(44 + n * 2);
+      const view = new DataView(buf);
+      const str = (off, s) => { for (let i = 0; i < s.length; i++) view.setUint8(off + i, s.charCodeAt(i)); };
+      str(0, "RIFF");
+      view.setUint32(4, 36 + n * 2, true);
+      str(8, "WAVE");
+      str(12, "fmt ");
+      view.setUint32(16, 16, true);
+      view.setUint16(20, 1, true);
+      view.setUint16(22, 1, true);
+      view.setUint32(24, SR, true);
+      view.setUint32(28, SR * 2, true);
+      view.setUint16(32, 2, true);
+      view.setUint16(34, 16, true);
+      str(36, "data");
+      view.setUint32(40, n * 2, true);
+      let off = 44;
+      for (let i = 0; i < n; i++) {
+        const s = clamp(samples[i], -1, 1);
+        view.setInt16(off, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+        off += 2;
+      }
+      return URL.createObjectURL(new Blob([buf], { type: "audio/wav" }));
+    }
+
+    function mixAt(out, start, tone, gain) {
+      const g = gain == null ? 1 : gain;
+      for (let i = 0; i < tone.length; i++) {
+        const j = start + i;
+        if (j >= 0 && j < out.length) out[j] += tone[i] * g;
+      }
+    }
+
+    function envSine(freq, seconds, peak, attack, decay, freqEnd) {
+      const n = Math.floor(SR * seconds);
+      const a = new Float32Array(n);
+      const atk = Math.max(1, Math.floor(SR * (attack || 0.012)));
+      const decStart = Math.max(atk, n - Math.floor(SR * (decay || seconds)));
+      for (let i = 0; i < n; i++) {
+        const t = i / SR;
+        const f = freqEnd ? freq * Math.pow(freqEnd / freq, t / seconds) : freq;
+        let e = peak;
+        if (i < atk) e *= i / atk;
+        else if (i > decStart) e *= Math.pow(0.0008, (i - decStart) / (n - decStart));
+        a[i] = Math.sin(2 * Math.PI * f * t) * e;
+      }
+      return a;
+    }
+
+    function noiseBurst(seconds, peak, attack, decay, brown) {
+      const n = Math.floor(SR * seconds);
+      const a = new Float32Array(n);
+      const atk = Math.max(1, Math.floor(SR * (attack || 0.008)));
+      const decStart = Math.max(atk, n - Math.floor(SR * (decay || seconds * 0.7)));
+      let y = 0;
+      for (let i = 0; i < n; i++) {
+        const w = Math.random() * 2 - 1;
+        if (brown) { y += 0.045 * (w - y); }
+        let e = peak;
+        if (i < atk) e *= i / atk;
+        else if (i > decStart) e *= Math.pow(0.0008, (i - decStart) / Math.max(1, n - decStart));
+        a[i] = (brown ? y * 4 : w) * e;
+      }
+      return a;
+    }
+
+    function makeSamples(kind) {
+      if (kind === "silent") return new Float32Array(Math.floor(SR * 0.12));
+
+      if (kind === "splash") {
+        const out = new Float32Array(Math.floor(SR * 1.05));
+        mixAt(out, 0, noiseBurst(0.32, 0.75, 0.008, 0.28, true));
+        mixAt(out, Math.floor(SR * 0.02), noiseBurst(0.18, 0.45, 0.004, 0.16, false), 0.7);
+        const pops = [0.14, 0.26, 0.38, 0.52, 0.66, 0.80];
+        pops.forEach((s, i) => {
+          const f = 620 + i * 160;
+          mixAt(out, Math.floor(SR * s), envSine(f, 0.14, 0.62, 0.005, 0.1, f * 1.7));
+        });
+        return out;
+      }
+
+      if (kind === "bell") {
+        const out = new Float32Array(Math.floor(SR * 1.35));
+        [[523.25, 0.72, 1.3], [659.25, 0.55, 1.15], [784, 0.42, 1.05], [1046.5, 0.32, 0.9], [1568, 0.16, 0.55]].forEach(([f, p, d]) => {
+          mixAt(out, 0, envSine(f, d, p, 0.008, d * 0.9));
+        });
+        return out;
+      }
+
+      if (kind === "keyboard") {
+        const out = new Float32Array(Math.floor(SR * 1.0));
+        for (let i = 0; i < 8; i++) {
+          const s = Math.floor(SR * (i * 0.1 + (i % 2 ? 0.015 : 0)));
+          mixAt(out, s, noiseBurst(0.04, 0.7, 0.001, 0.03, false));
+          mixAt(out, s, envSine(2100 + (i * 190) % 800, 0.035, 0.28, 0.001, 0.03));
+        }
+        return out;
+      }
+
+      if (kind === "whoosh") {
+        const out = new Float32Array(Math.floor(SR * 1.05));
+        mixAt(out, 0, noiseBurst(0.9, 0.72, 0.08, 0.55, true));
+        mixAt(out, Math.floor(SR * 0.04), envSine(880, 0.85, 0.28, 0.05, 0.6, 180));
+        return out;
+      }
+
+      if (kind === "chime") {
+        const out = new Float32Array(Math.floor(SR * 1.15));
+        [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => {
+          const s = Math.floor(SR * i * 0.16);
+          mixAt(out, s, envSine(f, 0.5, 0.62, 0.008, 0.4));
+          mixAt(out, s, envSine(f * 2, 0.28, 0.18, 0.006, 0.2));
+        });
+        return out;
+      }
+
+      if (kind === "munch") {
+        const out = new Float32Array(Math.floor(SR * 0.95));
+        [0, 0.2, 0.4, 0.6].forEach((s) => {
+          const at = Math.floor(SR * s);
+          mixAt(out, at, noiseBurst(0.11, 0.78, 0.002, 0.08, false));
+          mixAt(out, at, noiseBurst(0.09, 0.4, 0.002, 0.07, true), 0.8);
+          mixAt(out, at, envSine(150, 0.09, 0.28, 0.002, 0.07, 70));
+        });
+        return out;
+      }
+
+      if (kind === "happy") {
+        const out = new Float32Array(Math.floor(SR * 1.2));
+        [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => {
+          mixAt(out, Math.floor(SR * (0.03 + i * 0.05)), envSine(f, 0.95, 0.55, 0.012, 0.8));
+        });
+        mixAt(out, Math.floor(SR * 0.2), envSine(1318.5, 0.65, 0.28, 0.01, 0.5));
+        return out;
+      }
+
+      if (kind === "intro") {
+        const out = new Float32Array(Math.floor(SR * 0.75));
+        mixAt(out, 0, envSine(659.25, 0.32, 0.65, 0.008, 0.25));
+        mixAt(out, Math.floor(SR * 0.14), envSine(783.99, 0.5, 0.65, 0.008, 0.38));
+        return out;
+      }
+
+      if (kind === "rain") {
+        const out = new Float32Array(Math.floor(SR * 1.25));
+        mixAt(out, 0, noiseBurst(1.25, 0.22, 0.05, 0.2, false), 0.6);
+        for (let k = 0; k < 70; k++) {
+          const s = Math.floor(Math.random() * (out.length - SR * 0.04));
+          mixAt(out, s, noiseBurst(0.03 + Math.random() * 0.03, 0.45 + Math.random() * 0.25, 0.001, 0.025, false));
+        }
+        return out;
+      }
+
+      if (kind === "wind") {
+        const out = new Float32Array(Math.floor(SR * 1.25));
+        mixAt(out, 0, noiseBurst(1.25, 0.7, 0.15, 0.35, true));
+        mixAt(out, Math.floor(SR * 0.05), envSine(220, 1.1, 0.18, 0.12, 0.5, 110));
+        return out;
+      }
+
+      return new Float32Array(Math.floor(SR * 0.2));
+    }
+
+    function makeAudioEl(url) {
+      const a = new Audio();
+      a.src = url;
+      a.preload = "auto";
+      a.playsInline = true;
+      a.setAttribute("playsinline", "");
+      a.setAttribute("webkit-playsinline", "");
+      a.volume = 1;
+      return a;
+    }
+
+    function buildSoundLibrary() {
+      const kinds = ["silent","splash","bell","keyboard","whoosh","chime","munch","happy","intro","rain","wind"];
+      kinds.forEach((k) => {
+        audioEls[k] = makeAudioEl(encodeWav(makeSamples(k)));
+      });
+    }
+
+    function createOrResumeContext() {
       const AC = window.AudioContext || window.webkitAudioContext;
       if (!AC) return null;
-      if (!audioCtx) {
-        audioCtx = new AC();
-        master = audioCtx.createGain();
-        master.gain.value = 0.22;
-        master.connect(audioCtx.destination);
-      }
+      if (!audioCtx) audioCtx = new AC();
       if (audioCtx.state === "suspended") audioCtx.resume();
       return audioCtx;
     }
 
-    function noiseBuffer(ctx, seconds) {
-      const n = Math.max(1, Math.floor(ctx.sampleRate * seconds));
-      const buf = ctx.createBuffer(1, n, ctx.sampleRate);
-      const data = buf.getChannelData(0);
-      for (let i = 0; i < n; i++) data[i] = Math.random() * 2 - 1;
-      return buf;
+    function playSilentBuffer() {
+      const ctx = createOrResumeContext();
+      if (!ctx) return;
+      try {
+        const n = Math.max(1, Math.floor(ctx.sampleRate * 0.05));
+        const buf = ctx.createBuffer(1, n, ctx.sampleRate);
+        const src = ctx.createBufferSource();
+        src.buffer = buf;
+        const g = ctx.createGain();
+        g.gain.value = 0.001;
+        src.connect(g);
+        g.connect(ctx.destination);
+        src.start(0);
+      } catch (e) {}
     }
 
-    function playNoise(ctx, dest, { start, duration, type, freq, Q, gain, freqEnd }) {
-      const src = ctx.createBufferSource();
-      src.buffer = noiseBuffer(ctx, duration + 0.05);
-      const filter = ctx.createBiquadFilter();
-      filter.type = type || "bandpass";
-      filter.frequency.setValueAtTime(freq || 800, ctx.currentTime + start);
-      if (freqEnd) filter.frequency.exponentialRampToValueAtTime(Math.max(60, freqEnd), ctx.currentTime + start + duration);
-      filter.Q.value = Q == null ? 1.2 : Q;
-      const g = ctx.createGain();
-      const t = ctx.currentTime + start;
-      g.gain.setValueAtTime(0.0001, t);
-      g.gain.exponentialRampToValueAtTime(gain || 0.6, t + 0.012);
-      g.gain.exponentialRampToValueAtTime(0.0001, t + duration);
-      src.connect(filter);
-      filter.connect(g);
-      g.connect(dest);
-      src.start(t);
-      src.stop(t + duration + 0.02);
-    }
-
-    function playTone(ctx, dest, { freq, start, duration, type, gain, freqEnd, attack }) {
-      const osc = ctx.createOscillator();
-      osc.type = type || "sine";
-      const t = ctx.currentTime + start;
-      osc.frequency.setValueAtTime(freq, t);
-      if (freqEnd) osc.frequency.exponentialRampToValueAtTime(Math.max(20, freqEnd), t + duration);
-      const g = ctx.createGain();
-      const a = attack == null ? 0.01 : attack;
-      g.gain.setValueAtTime(0.0001, t);
-      g.gain.exponentialRampToValueAtTime(gain || 0.3, t + a);
-      g.gain.exponentialRampToValueAtTime(0.0001, t + duration);
-      osc.connect(g);
-      g.connect(dest);
-      osc.start(t);
-      osc.stop(t + duration + 0.02);
+    function unlockHtmlAudio(playKind) {
+      Object.keys(audioEls).forEach((k) => {
+        const a = audioEls[k];
+        if (!a) return;
+        if (k === playKind) return;
+        try {
+          a.volume = 0.01;
+          const p = a.play();
+          const reset = () => { try { a.pause(); a.currentTime = 0; } catch (e) {} a.volume = 1; };
+          if (p && p.then) p.then(reset).catch(reset);
+          else reset();
+        } catch (e) { a.volume = 1; }
+      });
     }
 
     function playSound(kind) {
-      const ctx = ensureAudio();
-      if (!ctx || !master) return SOUND_MS[kind] || 600;
-
-      if (kind === "splash") {
-        playNoise(ctx, master, { start: 0, duration: 0.28, type: "lowpass", freq: 1800, freqEnd: 400, Q: 0.7, gain: 0.7 });
-        playNoise(ctx, master, { start: 0.02, duration: 0.18, type: "bandpass", freq: 900, Q: 0.8, gain: 0.5 });
-        const bubbles = [0.12, 0.22, 0.32, 0.44, 0.54];
-        bubbles.forEach((s, i) => {
-          const f = 700 + i * 180 + Math.random() * 80;
-          playTone(ctx, master, { freq: f, freqEnd: f * 1.6, start: s, duration: 0.11, gain: 0.22, type: "sine" });
-        });
-        return SOUND_MS.splash;
+      createOrResumeContext();
+      playSilentBuffer();
+      const el = audioEls[kind] || audioEls.intro;
+      if (!el) return;
+      try {
+        el.pause();
+        el.currentTime = 0;
+        el.volume = 1;
+        const p = el.play();
+        if (p && p.catch) p.catch(() => playWebAudioFallback(kind));
+      } catch (e) {
+        playWebAudioFallback(kind);
       }
-
-      if (kind === "bell") {
-        [523.25, 659.25, 784, 1046.5].forEach((f, i) => {
-          playTone(ctx, master, { freq: f, start: 0, duration: 0.9 - i * 0.1, gain: 0.28 / (i + 1), type: "sine", attack: 0.01 });
-        });
-        playTone(ctx, master, { freq: 1568, start: 0, duration: 0.4, gain: 0.08, type: "sine" });
-        return SOUND_MS.bell;
-      }
-
-      if (kind === "keyboard") {
-        for (let i = 0; i < 7; i++) {
-          const s = i * 0.075 + (i % 2 ? 0.012 : 0);
-          playNoise(ctx, master, { start: s, duration: 0.03, type: "highpass", freq: 1800, Q: 0.7, gain: 0.45 });
-          playTone(ctx, master, { freq: 2200 + (i * 170) % 900, start: s, duration: 0.028, gain: 0.1, type: "square" });
-        }
-        return SOUND_MS.keyboard;
-      }
-
-      if (kind === "whoosh") {
-        playNoise(ctx, master, { start: 0, duration: 0.55, type: "lowpass", freq: 2400, freqEnd: 280, Q: 0.6, gain: 0.7 });
-        playTone(ctx, master, { freq: 880, freqEnd: 220, start: 0.02, duration: 0.55, gain: 0.12, type: "sine" });
-        return SOUND_MS.whoosh;
-      }
-
-      if (kind === "chime") {
-        const notes = [523.25, 659.25, 783.99, 1046.5];
-        notes.forEach((f, i) => {
-          playTone(ctx, master, { freq: f, start: i * 0.13, duration: 0.35, gain: 0.22, type: "triangle", attack: 0.008 });
-          playTone(ctx, master, { freq: f * 2, start: i * 0.13, duration: 0.2, gain: 0.06, type: "sine" });
-        });
-        return SOUND_MS.chime;
-      }
-
-      if (kind === "munch") {
-        [0, 0.16, 0.32].forEach((s) => {
-          playNoise(ctx, master, { start: s, duration: 0.09, type: "bandpass", freq: 1400, Q: 1.6, gain: 0.7 });
-          playNoise(ctx, master, { start: s, duration: 0.07, type: "lowpass", freq: 500, Q: 0.8, gain: 0.45 });
-          playTone(ctx, master, { freq: 140, freqEnd: 80, start: s, duration: 0.08, gain: 0.12, type: "triangle" });
-        });
-        return SOUND_MS.munch;
-      }
-
-      if (kind === "happy") {
-        const chord = [523.25, 659.25, 783.99, 1046.5];
-        chord.forEach((f, i) => {
-          playTone(ctx, master, { freq: f, start: 0.02 + i * 0.04, duration: 0.75, gain: 0.18, type: "sine", attack: 0.015 });
-        });
-        playTone(ctx, master, { freq: 1318.5, start: 0.18, duration: 0.5, gain: 0.1, type: "sine" });
-        return SOUND_MS.happy;
-      }
-
-      if (kind === "intro") {
-        playTone(ctx, master, { freq: 659.25, start: 0, duration: 0.25, gain: 0.2, type: "sine" });
-        playTone(ctx, master, { freq: 783.99, start: 0.12, duration: 0.35, gain: 0.2, type: "sine" });
-        return SOUND_MS.intro;
-      }
-
-      return 400;
     }
 
-    /* ---------- speech (Web Speech API, iPad Safari friendly) ---------- */
+    function playWebAudioFallback(kind) {
+      const ctx = createOrResumeContext();
+      if (!ctx) return;
+      try {
+        const samples = makeSamples(kind);
+        const buf = ctx.createBuffer(1, samples.length, SR);
+        buf.getChannelData(0).set(samples);
+        const src = ctx.createBufferSource();
+        src.buffer = buf;
+        const g = ctx.createGain();
+        g.gain.value = 0.85;
+        src.connect(g);
+        g.connect(ctx.destination);
+        src.start(0);
+      } catch (e) {}
+    }
+
+    function unlockAll(playKind, speakText) {
+      createOrResumeContext();
+      playSilentBuffer();
+      if (speakText) speakNow(speakText);
+      unlockHtmlAudio(playKind);
+      if (playKind) playSound(playKind);
+      else if (audioEls.silent) {
+        try { audioEls.silent.volume = 1; audioEls.silent.currentTime = 0; audioEls.silent.play().catch(function(){}); } catch (e) {}
+      }
+      audioReady = true;
+    }
+
+    /* ---------- speech (must be called directly in the tap handler) ---------- */
     let chosenVoice = null;
-    let speakTimer = null;
 
     function pickVoice() {
       const voices = window.speechSynthesis ? speechSynthesis.getVoices() : [];
       if (!voices.length) return null;
       const enUS = voices.filter((v) => /en-US/i.test(v.lang));
       const pool = enUS.length ? enUS : voices.filter((v) => /^en/i.test(v.lang));
-      const prefer = pool.find((v) => /Samantha|Jenny|Karen|siri|Female|Google US English|Samantha/i.test(v.name));
-      return prefer || pool[0] || voices[0] || null;
+      return pool.find((v) => /Samantha|Jenny|Karen|siri|Female|Google US English/i.test(v.name)) || pool[0] || voices[0] || null;
     }
 
     function refreshVoice() { chosenVoice = pickVoice(); }
-
     if (window.speechSynthesis) {
       refreshVoice();
       speechSynthesis.onvoiceschanged = refreshVoice;
     }
 
-    function unlockSpeech() {
-      if (!window.speechSynthesis) return;
-      try {
-        const dummy = new SpeechSynthesisUtterance(" ");
-        dummy.volume = 0;
-        dummy.rate = 1;
-        dummy.lang = "en-US";
-        if (chosenVoice) dummy.voice = chosenVoice;
-        speechSynthesis.speak(dummy);
-      } catch (e) {}
-    }
-
     function speakNow(text) {
       if (!window.speechSynthesis || !text) return;
-      speechSynthesis.cancel();
+      try { speechSynthesis.cancel(); } catch (e) {}
       const u = new SpeechSynthesisUtterance(text);
       u.lang = "en-US";
       u.rate = 0.9;
@@ -600,116 +825,246 @@
       speechSynthesis.speak(u);
     }
 
-    function speakAfter(text, delayMs) {
-      if (speakTimer) clearTimeout(speakTimer);
-      speakTimer = setTimeout(() => {
-        speakNow(text);
-        speakTimer = null;
-      }, delayMs);
+    function daySpeech(when, info, wx) {
+      let parts = [when + ".", info.dayName + "."];
+      if (wx) parts.push(wx.word + ".", wx.feel + ".");
+      info.activities.forEach((a) => parts.push(a.speech + "."));
+      return parts.join(" ").replace(/\.+/g, ".").replace(/\s+\./g, ".");
     }
 
-    function daySpeech(when, info) {
-      const intro = when + " is " + info.dayName + ".";
-      const rest = info.activities.map((a) => a.speech).join(" ");
-      return (intro + " " + rest).trim();
+    /* ---------- weather (Open-Meteo, Lowell, MI) ---------- */
+    let weatherByDate = null;
+
+    function conditionFromCode(code) {
+      const c = Number(code);
+      if (c === 0 || c === 1) return { emoji: "☀️", word: "Sunny", sound: "wind" };
+      if (c === 2 || c === 3) return { emoji: "☁️", word: "Cloudy", sound: "wind" };
+      if (c === 45 || c === 48) return { emoji: "🌫️", word: "Foggy", sound: "wind" };
+      if ([71, 73, 75, 77, 85, 86].indexOf(c) >= 0) return { emoji: "❄️", word: "Snowy", sound: "wind" };
+      if ([95, 96, 99].indexOf(c) >= 0) return { emoji: "⛈️", word: "Stormy", sound: "rain" };
+      if ([51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82].indexOf(c) >= 0) return { emoji: "🌧️", word: "Rainy", sound: "rain" };
+      return { emoji: "☁️", word: "Cloudy", sound: "wind" };
     }
 
-    /* ---------- render ---------- */
-    let offset = 0;
-    const daysEl = document.getElementById("days");
-    const todayBtn = document.getElementById("todayBtn");
+    function feelFromHigh(t) {
+      if (t >= 80) return "Hot";
+      if (t >= 65) return "Warm";
+      if (t >= 50) return "Cool";
+      if (t >= 32) return "Cold";
+      return "Freezing";
+    }
 
+    function parseWeather(json) {
+      const daily = json && json.daily;
+      if (!daily || !daily.time) return null;
+      const codes = daily.weather_code || daily.weathercode || [];
+      const highs = daily.temperature_2m_max || [];
+      const days = {};
+      daily.time.forEach((date, i) => {
+        const cond = conditionFromCode(codes[i]);
+        const high = highs[i];
+        days[date] = {
+          emoji: cond.emoji,
+          word: cond.word,
+          sound: cond.sound,
+          feel: (high == null || isNaN(high)) ? "" : feelFromHigh(high),
+          high: high
+        };
+      });
+      return { fetchedAt: Date.now(), days: days };
+    }
+
+    function loadCachedWeather() {
+      try {
+        const raw = localStorage.getItem(WEATHER_CACHE_KEY);
+        if (!raw) return null;
+        const data = JSON.parse(raw);
+        if (data && data.days) return data;
+      } catch (e) {}
+      return null;
+    }
+
+    function loadWeather() {
+      const cached = loadCachedWeather();
+      if (cached) {
+        weatherByDate = cached.days;
+        render();
+      }
+      fetch(WEATHER_URL)
+        .then((r) => { if (!r.ok) throw new Error("http"); return r.json(); })
+        .then((json) => {
+          const parsed = parseWeather(json);
+          if (!parsed) throw new Error("parse");
+          try { localStorage.setItem(WEATHER_CACHE_KEY, JSON.stringify(parsed)); } catch (e) {}
+          weatherByDate = parsed.days;
+          render();
+        })
+        .catch(() => {
+          if (!cached) {
+            weatherByDate = null;
+            render();
+          }
+        });
+    }
+
+    /* ---------- UI helpers ---------- */
     function animateIcon(el, anim) {
       const cls = "anim-" + anim;
       el.classList.remove(cls);
       void el.offsetWidth;
       el.classList.add(cls);
-      const done = () => el.classList.remove(cls);
-      el.addEventListener("animationend", done, { once: true });
+      el.addEventListener("animationend", () => el.classList.remove(cls), { once: true });
     }
 
-    function playActivity(cardEl, activity, extraSpeech) {
-      ensureAudio();
-      unlockSpeech();
-      const icon = cardEl.querySelector(".icon");
-      if (icon) animateIcon(icon, activity.anim);
-      const wait = playSound(activity.sound);
-      speakAfter(extraSpeech || activity.speech, wait);
+    function addWord(parent, text, extraClass) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "word" + (extraClass ? " " + extraClass : "");
+      b.textContent = text;
+      b.addEventListener("click", (e) => {
+        e.stopPropagation();
+        createOrResumeContext();
+        playSilentBuffer();
+        speakNow(text);
+      });
+      parent.appendChild(b);
+      return b;
+    }
+
+    function addWords(parent, phrase, extraClass) {
+      phrase.split(/\s+/).forEach((w) => addWord(parent, w, extraClass));
     }
 
     function makeCard(activity) {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "card " + activity.color;
-      btn.setAttribute("aria-label", activity.label);
-      btn.innerHTML = '<span class="icon" aria-hidden="true">' + activity.icon + '</span>' +
-                      '<span class="label">' + activity.label + "</span>";
-      btn.addEventListener("click", () => playActivity(btn, activity));
-      return btn;
+      const card = document.createElement("div");
+      card.className = "card " + activity.color;
+
+      const iconBtn = document.createElement("button");
+      iconBtn.type = "button";
+      iconBtn.className = "icon-btn";
+      iconBtn.setAttribute("aria-label", activity.speech);
+      iconBtn.textContent = activity.icon;
+      iconBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        createOrResumeContext();
+        playSilentBuffer();
+        speakNow(activity.speech);
+        playSound(activity.sound);
+        animateIcon(iconBtn, activity.anim);
+      });
+
+      const label = document.createElement("div");
+      label.className = "label";
+      addWords(label, activity.label);
+
+      card.appendChild(iconBtn);
+      card.appendChild(label);
+      return card;
+    }
+
+    function makeWeather(wx) {
+      const row = document.createElement("div");
+      row.className = "weather";
+      if (!wx || !wx.word) return row;
+
+      const emo = document.createElement("button");
+      emo.type = "button";
+      emo.className = "wx-emoji";
+      emo.setAttribute("aria-label", wx.word + ". " + wx.feel);
+      emo.textContent = wx.emoji;
+      const phrase = [wx.word, wx.feel].filter(Boolean).join(". ") + ".";
+      emo.addEventListener("click", (e) => {
+        e.stopPropagation();
+        createOrResumeContext();
+        playSilentBuffer();
+        speakNow(phrase);
+        playSound(wx.sound || "wind");
+        animateIcon(emo, "weather");
+      });
+
+      row.appendChild(emo);
+      addWord(row, wx.word);
+      if (wx.feel) {
+        const dot = document.createElement("span");
+        dot.className = "dot";
+        dot.textContent = "•";
+        row.appendChild(dot);
+        addWord(row, wx.feel);
+      }
+      row.classList.add("show");
+      return row;
     }
 
     function makePanel(info, today, isSecondary) {
       const when = whenLabel(info.key, today);
+      const wx = weatherByDate && weatherByDate[info.key] ? weatherByDate[info.key] : null;
       const panel = document.createElement("section");
       panel.className = "day-panel" + (isSecondary ? " tomorrow-panel" : "");
 
       const head = document.createElement("div");
       head.className = "day-head";
-      head.setAttribute("role", "button");
-      head.tabIndex = 0;
 
       const labels = document.createElement("div");
       labels.className = "day-labels";
-      labels.innerHTML = '<div class="when">' + when + '</div>' +
-        '<div class="day-name">' + when + " is " + info.dayName + "</div>" +
-        '<div class="date-line">' + info.dateLine + "</div>";
+
+      const whenEl = document.createElement("div");
+      whenEl.className = "when";
+      addWord(whenEl, when, "when");
+      labels.appendChild(whenEl);
+
+      const dayBtn = document.createElement("button");
+      dayBtn.type = "button";
+      dayBtn.className = "word day-name " + info.weekday;
+      dayBtn.textContent = info.dayName;
+      dayBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        createOrResumeContext();
+        playSilentBuffer();
+        speakNow(info.dayName);
+      });
+      labels.appendChild(dayBtn);
+
+      const dateLine = document.createElement("div");
+      dateLine.className = "date-line";
+      addWords(dateLine, info.dateLine);
+      labels.appendChild(dateLine);
 
       const speakBtn = document.createElement("button");
       speakBtn.type = "button";
       speakBtn.className = "speak-btn";
-      speakBtn.setAttribute("aria-label", "Read " + when + " out loud");
+      speakBtn.setAttribute("aria-label", "Read " + when);
       speakBtn.textContent = "🔊";
-
-      const sentence = daySpeech(when, info);
-
-      function readDay(ev) {
-        if (ev) ev.stopPropagation();
-        ensureAudio();
-        unlockSpeech();
+      const sentence = daySpeech(when, info, wx);
+      speakBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        createOrResumeContext();
+        playSilentBuffer();
+        speakNow(sentence);
+        playSound("intro");
         speakBtn.classList.add("playing");
         setTimeout(() => speakBtn.classList.remove("playing"), 900);
-        panel.querySelectorAll(".card").forEach((card, i) => {
-          const icon = card.querySelector(".icon");
+        panel.querySelectorAll(".icon-btn").forEach((icon, i) => {
           const activity = info.activities[i];
-          if (icon && activity) {
-            setTimeout(() => animateIcon(icon, activity.anim), i * 90);
-          }
+          if (icon && activity) setTimeout(() => animateIcon(icon, activity.anim), i * 90);
         });
-        const wait = playSound("intro");
-        speakAfter(sentence, wait);
-      }
-
-      speakBtn.addEventListener("click", readDay);
-      head.addEventListener("click", (e) => {
-        if (e.target === speakBtn || speakBtn.contains(e.target)) return;
-        ensureAudio();
-        unlockSpeech();
-        const wait = playSound("intro");
-        const line = when + " is " + info.dayName + ", " + info.dateLine + ".";
-        speakAfter(line, wait);
       });
 
       head.appendChild(labels);
       head.appendChild(speakBtn);
 
+      panel.appendChild(head);
+      panel.appendChild(makeWeather(wx));
+
       const cards = document.createElement("div");
       cards.className = "cards";
       info.activities.forEach((a) => cards.appendChild(makeCard(a)));
-
-      panel.appendChild(head);
       panel.appendChild(cards);
       return panel;
     }
+
+    let offset = 0;
+    const daysEl = document.getElementById("days");
+    const todayBtn = document.getElementById("todayBtn");
 
     function render() {
       const today = todayKey();
@@ -717,40 +1072,61 @@
       const primary = infoFor(primaryKey);
       daysEl.innerHTML = "";
       daysEl.appendChild(makePanel(primary, today, false));
-
       if (offset === 0) {
-        const tomorrow = infoFor(addDays(today, 1));
-        daysEl.appendChild(makePanel(tomorrow, today, true));
+        daysEl.appendChild(makePanel(infoFor(addDays(today, 1)), today, true));
       }
-
       todayBtn.classList.toggle("show", offset !== 0);
     }
 
     document.getElementById("prevBtn").addEventListener("click", () => {
-      ensureAudio();
-      unlockSpeech();
+      createOrResumeContext();
+      playSilentBuffer();
       offset -= 1;
       render();
     });
-
     document.getElementById("nextBtn").addEventListener("click", () => {
-      ensureAudio();
-      unlockSpeech();
+      createOrResumeContext();
+      playSilentBuffer();
       offset += 1;
       render();
     });
-
     todayBtn.addEventListener("click", () => {
-      ensureAudio();
-      unlockSpeech();
+      createOrResumeContext();
+      playSilentBuffer();
       offset = 0;
       render();
     });
 
-    document.addEventListener("touchstart", () => { ensureAudio(); }, { passive: true });
-    document.addEventListener("click", () => { ensureAudio(); });
+    /* ---- first-tap unlock overlay ---- */
+    let started = false;
+    function onStart(e) {
+      if (started) return;
+      started = true;
+      if (e && e.preventDefault) e.preventDefault();
+      refreshVoice();
+      unlockAll("happy", "Hi Wesley!");
+      const overlay = document.getElementById("unlock");
+      overlay.classList.add("hide");
+      setTimeout(() => { overlay.style.display = "none"; }, 450);
+    }
+    const unlockBtn = document.getElementById("unlockBtn");
+    const overlay = document.getElementById("unlock");
+    unlockBtn.addEventListener("click", onStart);
+    unlockBtn.addEventListener("touchend", onStart, { passive: false });
+    overlay.addEventListener("click", onStart);
+    overlay.addEventListener("touchend", onStart, { passive: false });
 
+    document.addEventListener("touchstart", () => { if (audioReady) createOrResumeContext(); }, { passive: true });
+
+    buildSoundLibrary();
     render();
+    loadWeather();
+
+    /* preview=1 skips the start overlay (used for screenshots only) */
+    if (/[?&]preview=1\b/.test(location.search)) {
+      started = true;
+      document.getElementById("unlock").style.display = "none";
+    }
   </script>
 </body>
 </html>
