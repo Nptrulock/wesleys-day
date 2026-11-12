@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Wesley's Day">
+  <meta name="theme-color" content="#5EC8F8">
+  <meta name="description" content="Wesley's daily routine">
+  <title>Wesley's Day</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+  <link rel="icon" type="image/png" sizes="180x180" href="icon-180.png">
+  <link rel="icon" type="image/png" href="data:image/png;base64,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">
+  <link rel="apple-touch-icon" href="data:image/png;base64,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">
+  <style>
+    :root {
+      --sky: #7EC8F8;
+      --sky-deep: #4EB3F0;
+      --sun: #FFE566;
+      --peach: #FFD6A5;
+      --coral: #FF6B6B;
+      --ink: #1F3A5F;
+      --ink-soft: #3D5A80;
+      --card: #FFFFFF;
+      --shadow: 0 10px 0 rgba(31, 58, 95, 0.12);
+      --radius: 28px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      min-height: 100%;
+      background: linear-gradient(180deg, #6EC7F8 0%, #B8E4FF 28%, #FFF3A8 68%, #FFD6A5 100%);
+      background-attachment: fixed;
+      color: var(--ink);
+      font-family: ui-rounded, "SF Pro Rounded", "Hiragino Maru Gothic ProN", "Arial Rounded MT Bold", "Trebuchet MS", system-ui, "Apple Color Emoji", "Noto Color Emoji", "Segoe UI Emoji", sans-serif;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    body {
+      padding: calc(16px + env(safe-area-inset-top)) 20px calc(24px + env(safe-area-inset-bottom));
+    }
+
+    .app {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    header.top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .nav-btn {
+      width: 64px;
+      height: 64px;
+      border: 0;
+      border-radius: 50%;
+      background: #fff;
+      color: var(--ink);
+      font-size: 36px;
+      line-height: 1;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      transition: transform 0.12s ease, background 0.12s ease;
+    }
+
+    .nav-btn:active { transform: scale(0.92); background: var(--sun); }
+
+    .title-wrap {
+      text-align: center;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .app-title {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: var(--ink);
+      text-shadow: 0 2px 0 rgba(255,255,255,0.6);
+    }
+
+    .today-btn {
+      display: none;
+      margin: 8px auto 0;
+      border: 0;
+      background: var(--coral);
+      color: #fff;
+      font: inherit;
+      font-size: 18px;
+      font-weight: 700;
+      padding: 8px 20px;
+      border-radius: 999px;
+      box-shadow: 0 4px 0 #d94d4d;
+      cursor: pointer;
+    }
+
+    .today-btn.show { display: inline-block; }
+    .today-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #d94d4d; }
+
+    .days {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .day-panel {
+      background: rgba(255,255,255,0.38);
+      border-radius: 36px;
+      padding: 22px 18px 20px;
+      backdrop-filter: blur(8px);
+    }
+
+    .day-panel.tomorrow-panel {
+      background: rgba(255,255,255,0.28);
+    }
+
+    .day-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+      cursor: pointer;
+    }
+
+    .day-labels { flex: 1; min-width: 0; }
+
+    .when {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 2px;
+    }
+
+    .day-name {
+      font-size: clamp(32px, 6vw, 48px);
+      font-weight: 800;
+      line-height: 1.1;
+      color: var(--ink);
+    }
+
+    .date-line {
+      font-size: clamp(20px, 3.4vw, 26px);
+      font-weight: 600;
+      color: var(--ink-soft);
+      margin-top: 4px;
+    }
+
+    .speak-btn {
+      width: 72px;
+      height: 72px;
+      flex-shrink: 0;
+      border: 0;
+      border-radius: 50%;
+      background: #FFF176;
+      box-shadow: 0 8px 0 #E8C200;
+      font-size: 38px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: transform 0.12s ease;
+    }
+
+    .speak-btn:active,
+    .speak-btn.playing {
+      transform: scale(0.94);
+      background: #FFE566;
+    }
+
+    .speak-btn.playing { animation: pulse 0.8s ease infinite; }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+
+    .cards {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .card {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      min-height: 108px;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      border: 4px solid transparent;
+      transition: transform 0.12s ease, border-color 0.12s ease;
+      -webkit-user-select: none;
+    }
+
+    .card:active { transform: scale(0.98); }
+
+    .card.swim { border-color: #7EC8F8; }
+    .card.work { border-color: #FFD166; }
+    .card.paperplane { border-color: #80E0C8; }
+    .card.babysitter { border-color: #FFB4D0; }
+    .card.feeding { border-color: #FFB347; }
+    .card.family, .card.daddy { border-color: #FF8FAB; }
+    .card.church { border-color: #C9B6FF; }
+
+    .icon {
+      width: 84px;
+      height: 84px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      font-size: 64px;
+      line-height: 1;
+      transform-origin: center center;
+      will-change: transform;
+      font-family: "Apple Color Emoji", "Noto Color Emoji", "Segoe UI Emoji", sans-serif;
+    }
+
+    .label {
+      font-size: clamp(22px, 3.6vw, 30px);
+      font-weight: 800;
+      line-height: 1.2;
+      color: var(--ink);
+    }
+
+    /* Activity animations */
+    .anim-splash { animation: splash 0.8s ease; }
+    @keyframes splash {
+      0% { transform: translateY(0) scale(1) rotate(0); }
+      18% { transform: translateY(-22px) scale(1.18) rotate(-10deg); }
+      36% { transform: translateY(8px) scale(0.92, 1.08) rotate(10deg); }
+      54% { transform: translateY(-14px) scale(1.12) rotate(-6deg); }
+      72% { transform: translateY(4px) scale(1.02) rotate(4deg); }
+      100% { transform: translateY(0) scale(1) rotate(0); }
+    }
+
+    .anim-ring { animation: ring 0.9s ease; transform-origin: 50% 0%; }
+    @keyframes ring {
+      0%, 100% { transform: rotate(0); }
+      12% { transform: rotate(18deg); }
+      28% { transform: rotate(-16deg); }
+      44% { transform: rotate(12deg); }
+      60% { transform: rotate(-8deg); }
+      76% { transform: rotate(4deg); }
+    }
+
+    .anim-type { animation: type 0.7s ease; }
+    @keyframes type {
+      0%, 100% { transform: translateY(0) scale(1); }
+      12% { transform: translateY(6px) scale(0.94); }
+      24% { transform: translateY(0) scale(1); }
+      40% { transform: translateY(6px) scale(0.94); }
+      52% { transform: translateY(0) scale(1); }
+      68% { transform: translateY(6px) scale(0.94); }
+      80% { transform: translateY(0) scale(1); }
+    }
+
+    .anim-fly { animation: fly 0.85s ease; }
+    @keyframes fly {
+      0% { transform: translate(0, 0) rotate(0) scale(1); }
+      35% { transform: translate(36px, -24px) rotate(-18deg) scale(1.12); }
+      65% { transform: translate(-14px, -8px) rotate(12deg) scale(1.05); }
+      100% { transform: translate(0, 0) rotate(0) scale(1); }
+    }
+
+    .anim-bounce { animation: bounce 0.75s ease; }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0) scale(1); }
+      25% { transform: translateY(-24px) scale(1.14); }
+      42% { transform: translateY(0) scale(1.08, 0.9); }
+      58% { transform: translateY(-12px) scale(1.08); }
+      75% { transform: translateY(0) scale(1); }
+    }
+
+    .anim-munch { animation: munch 0.7s ease; }
+    @keyframes munch {
+      0%, 100% { transform: scale(1, 1); }
+      15% { transform: scale(1.18, 0.78); }
+      30% { transform: scale(0.88, 1.16); }
+      45% { transform: scale(1.14, 0.84); }
+      60% { transform: scale(0.94, 1.1); }
+      80% { transform: scale(1.06, 0.96); }
+    }
+
+    .anim-hug { animation: hug 0.8s ease; }
+    @keyframes hug {
+      0%, 100% { transform: scale(1) rotate(0); }
+      25% { transform: scale(1.22) rotate(-7deg); }
+      50% { transform: scale(1.16) rotate(7deg); }
+      75% { transform: scale(1.24) rotate(-3deg); }
+    }
+
+    @media (orientation: landscape) and (min-width: 860px) {
+      .days { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+      .day-name { font-size: 40px; }
+      .card { min-height: 96px; }
+      .icon { width: 76px; height: 76px; font-size: 56px; }
+    }
+
+    @media (max-width: 420px) {
+      .nav-btn { width: 56px; height: 56px; font-size: 30px; }
+      .speak-btn { width: 64px; height: 64px; font-size: 32px; }
+      .icon { width: 72px; height: 72px; font-size: 52px; }
+      .card { min-height: 96px; gap: 12px; padding: 12px 14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="top">
+      <button class="nav-btn" id="prevBtn" aria-label="Previous day">◀</button>
+      <div class="title-wrap">
+        <h1 class="app-title">Wesley's Day</h1>
+        <button class="today-btn" id="todayBtn" type="button">Today</button>
+      </div>
+      <button class="nav-btn" id="nextBtn" aria-label="Next day">▶</button>
+    </header>
+    <div class="days" id="days"></div>
+  </div>
+
+  <script>
+    /* ============================================================
+       WEEKLY SCHEDULE — easy to edit
+       timezone: America/Detroit
+       Each activity:
+         icon, label, speech, sound, anim, color
+         sound: splash | bell | keyboard | whoosh | chime | munch | happy
+         anim:  splash | ring  | type     | fly    | bounce | munch | hug
+       ============================================================ */
+    const TIMEZONE = "America/Detroit";
+
+    const SCHEDULE = {
+      sunday: [
+        { icon: "🏊", label: "Goldfish Swim School", speech: "You have Goldfish Swim School.", sound: "splash", anim: "splash", color: "swim" }
+      ],
+      monday: [
+        { icon: "💻", label: "Daddy works", speech: "Daddy works.", sound: "keyboard", anim: "type", color: "work" },
+        { icon: "✈️", label: "Paper Plane Therapies", speech: "You have Paper Plane Therapies.", sound: "whoosh", anim: "fly", color: "paperplane" }
+      ],
+      tuesday: [
+        { icon: "💻", label: "Daddy works", speech: "Daddy works.", sound: "keyboard", anim: "type", color: "work" },
+        { icon: "🧑‍🍼", label: "Babysitter", speech: "You have a babysitter.", sound: "chime", anim: "bounce", color: "babysitter" }
+      ],
+      wednesday: [
+        { icon: "💻", label: "Daddy works", speech: "Daddy works.", sound: "keyboard", anim: "type", color: "work" },
+        { icon: "🥄", label: "Feeding Therapy", speech: "You have Feeding Therapy.", sound: "munch", anim: "munch", color: "feeding" },
+        { icon: "🧑‍🍼", label: "Babysitter", speech: "You have a babysitter.", sound: "chime", anim: "bounce", color: "babysitter" }
+      ],
+      thursday: [
+        { icon: "💻", label: "Daddy works", speech: "Daddy works.", sound: "keyboard", anim: "type", color: "work" },
+        { icon: "👨‍👩‍👦", label: "With Mommy and Daddy after work", speech: "After work you are with Mommy and Daddy.", sound: "happy", anim: "hug", color: "family" }
+      ],
+      friday: [
+        { icon: "💻", label: "Daddy works", speech: "Daddy works.", sound: "keyboard", anim: "type", color: "work" },
+        { icon: "👨", label: "With Daddy after work", speech: "After work you are with Daddy.", sound: "happy", anim: "hug", color: "daddy" }
+      ],
+      saturday: [
+        { icon: "⛪", label: "Impact Church", speech: "You have Impact Church.", sound: "bell", anim: "ring", color: "church" }
+      ]
+    };
+
+    const WEEKDAYS = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+    const WEEKDAY_LABELS = { sunday: "Sunday", monday: "Monday", tuesday: "Tuesday", wednesday: "Wednesday", thursday: "Thursday", friday: "Friday", saturday: "Saturday" };
+    const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+    const SOUND_MS = { splash: 700, bell: 900, keyboard: 650, whoosh: 700, chime: 750, munch: 650, happy: 850, intro: 500 };
+
+    /* ---------- dates in America/Detroit ---------- */
+    function todayKey() {
+      return new Intl.DateTimeFormat("en-CA", {
+        timeZone: TIMEZONE, year: "numeric", month: "2-digit", day: "2-digit"
+      }).format(new Date());
+    }
+
+    function addDays(key, n) {
+      const [y, m, d] = key.split("-").map(Number);
+      const dt = new Date(Date.UTC(y, m - 1, d + n, 12, 0, 0));
+      const yy = dt.getUTCFullYear();
+      const mm = String(dt.getUTCMonth() + 1).padStart(2, "0");
+      const dd = String(dt.getUTCDate()).padStart(2, "0");
+      return yy + "-" + mm + "-" + dd;
+    }
+
+    function infoFor(key) {
+      const [y, m, d] = key.split("-").map(Number);
+      const dt = new Date(Date.UTC(y, m - 1, d, 12, 0, 0));
+      const weekday = WEEKDAYS[dt.getUTCDay()];
+      return {
+        key,
+        weekday,
+        dayName: WEEKDAY_LABELS[weekday],
+        dateLine: MONTHS[m - 1] + " " + d,
+        activities: SCHEDULE[weekday] || []
+      };
+    }
+
+    function whenLabel(key, today) {
+      if (key === today) return "Today";
+      if (key === addDays(today, 1)) return "Tomorrow";
+      if (key === addDays(today, -1)) return "Yesterday";
+      return "This day";
+    }
+
+    /* ---------- audio (Web Audio API, synthesized) ---------- */
+    let audioCtx = null;
+    let master = null;
+
+    function ensureAudio() {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return null;
+      if (!audioCtx) {
+        audioCtx = new AC();
+        master = audioCtx.createGain();
+        master.gain.value = 0.22;
+        master.connect(audioCtx.destination);
+      }
+      if (audioCtx.state === "suspended") audioCtx.resume();
+      return audioCtx;
+    }
+
+    function noiseBuffer(ctx, seconds) {
+      const n = Math.max(1, Math.floor(ctx.sampleRate * seconds));
+      const buf = ctx.createBuffer(1, n, ctx.sampleRate);
+      const data = buf.getChannelData(0);
+      for (let i = 0; i < n; i++) data[i] = Math.random() * 2 - 1;
+      return buf;
+    }
+
+    function playNoise(ctx, dest, { start, duration, type, freq, Q, gain, freqEnd }) {
+      const src = ctx.createBufferSource();
+      src.buffer = noiseBuffer(ctx, duration + 0.05);
+      const filter = ctx.createBiquadFilter();
+      filter.type = type || "bandpass";
+      filter.frequency.setValueAtTime(freq || 800, ctx.currentTime + start);
+      if (freqEnd) filter.frequency.exponentialRampToValueAtTime(Math.max(60, freqEnd), ctx.currentTime + start + duration);
+      filter.Q.value = Q == null ? 1.2 : Q;
+      const g = ctx.createGain();
+      const t = ctx.currentTime + start;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(gain || 0.6, t + 0.012);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + duration);
+      src.connect(filter);
+      filter.connect(g);
+      g.connect(dest);
+      src.start(t);
+      src.stop(t + duration + 0.02);
+    }
+
+    function playTone(ctx, dest, { freq, start, duration, type, gain, freqEnd, attack }) {
+      const osc = ctx.createOscillator();
+      osc.type = type || "sine";
+      const t = ctx.currentTime + start;
+      osc.frequency.setValueAtTime(freq, t);
+      if (freqEnd) osc.frequency.exponentialRampToValueAtTime(Math.max(20, freqEnd), t + duration);
+      const g = ctx.createGain();
+      const a = attack == null ? 0.01 : attack;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(gain || 0.3, t + a);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + duration);
+      osc.connect(g);
+      g.connect(dest);
+      osc.start(t);
+      osc.stop(t + duration + 0.02);
+    }
+
+    function playSound(kind) {
+      const ctx = ensureAudio();
+      if (!ctx || !master) return SOUND_MS[kind] || 600;
+
+      if (kind === "splash") {
+        playNoise(ctx, master, { start: 0, duration: 0.28, type: "lowpass", freq: 1800, freqEnd: 400, Q: 0.7, gain: 0.7 });
+        playNoise(ctx, master, { start: 0.02, duration: 0.18, type: "bandpass", freq: 900, Q: 0.8, gain: 0.5 });
+        const bubbles = [0.12, 0.22, 0.32, 0.44, 0.54];
+        bubbles.forEach((s, i) => {
+          const f = 700 + i * 180 + Math.random() * 80;
+          playTone(ctx, master, { freq: f, freqEnd: f * 1.6, start: s, duration: 0.11, gain: 0.22, type: "sine" });
+        });
+        return SOUND_MS.splash;
+      }
+
+      if (kind === "bell") {
+        [523.25, 659.25, 784, 1046.5].forEach((f, i) => {
+          playTone(ctx, master, { freq: f, start: 0, duration: 0.9 - i * 0.1, gain: 0.28 / (i + 1), type: "sine", attack: 0.01 });
+        });
+        playTone(ctx, master, { freq: 1568, start: 0, duration: 0.4, gain: 0.08, type: "sine" });
+        return SOUND_MS.bell;
+      }
+
+      if (kind === "keyboard") {
+        for (let i = 0; i < 7; i++) {
+          const s = i * 0.075 + (i % 2 ? 0.012 : 0);
+          playNoise(ctx, master, { start: s, duration: 0.03, type: "highpass", freq: 1800, Q: 0.7, gain: 0.45 });
+          playTone(ctx, master, { freq: 2200 + (i * 170) % 900, start: s, duration: 0.028, gain: 0.1, type: "square" });
+        }
+        return SOUND_MS.keyboard;
+      }
+
+      if (kind === "whoosh") {
+        playNoise(ctx, master, { start: 0, duration: 0.55, type: "lowpass", freq: 2400, freqEnd: 280, Q: 0.6, gain: 0.7 });
+        playTone(ctx, master, { freq: 880, freqEnd: 220, start: 0.02, duration: 0.55, gain: 0.12, type: "sine" });
+        return SOUND_MS.whoosh;
+      }
+
+      if (kind === "chime") {
+        const notes = [523.25, 659.25, 783.99, 1046.5];
+        notes.forEach((f, i) => {
+          playTone(ctx, master, { freq: f, start: i * 0.13, duration: 0.35, gain: 0.22, type: "triangle", attack: 0.008 });
+          playTone(ctx, master, { freq: f * 2, start: i * 0.13, duration: 0.2, gain: 0.06, type: "sine" });
+        });
+        return SOUND_MS.chime;
+      }
+
+      if (kind === "munch") {
+        [0, 0.16, 0.32].forEach((s) => {
+          playNoise(ctx, master, { start: s, duration: 0.09, type: "bandpass", freq: 1400, Q: 1.6, gain: 0.7 });
+          playNoise(ctx, master, { start: s, duration: 0.07, type: "lowpass", freq: 500, Q: 0.8, gain: 0.45 });
+          playTone(ctx, master, { freq: 140, freqEnd: 80, start: s, duration: 0.08, gain: 0.12, type: "triangle" });
+        });
+        return SOUND_MS.munch;
+      }
+
+      if (kind === "happy") {
+        const chord = [523.25, 659.25, 783.99, 1046.5];
+        chord.forEach((f, i) => {
+          playTone(ctx, master, { freq: f, start: 0.02 + i * 0.04, duration: 0.75, gain: 0.18, type: "sine", attack: 0.015 });
+        });
+        playTone(ctx, master, { freq: 1318.5, start: 0.18, duration: 0.5, gain: 0.1, type: "sine" });
+        return SOUND_MS.happy;
+      }
+
+      if (kind === "intro") {
+        playTone(ctx, master, { freq: 659.25, start: 0, duration: 0.25, gain: 0.2, type: "sine" });
+        playTone(ctx, master, { freq: 783.99, start: 0.12, duration: 0.35, gain: 0.2, type: "sine" });
+        return SOUND_MS.intro;
+      }
+
+      return 400;
+    }
+
+    /* ---------- speech (Web Speech API, iPad Safari friendly) ---------- */
+    let chosenVoice = null;
+    let speakTimer = null;
+
+    function pickVoice() {
+      const voices = window.speechSynthesis ? speechSynthesis.getVoices() : [];
+      if (!voices.length) return null;
+      const enUS = voices.filter((v) => /en-US/i.test(v.lang));
+      const pool = enUS.length ? enUS : voices.filter((v) => /^en/i.test(v.lang));
+      const prefer = pool.find((v) => /Samantha|Jenny|Karen|siri|Female|Google US English|Samantha/i.test(v.name));
+      return prefer || pool[0] || voices[0] || null;
+    }
+
+    function refreshVoice() { chosenVoice = pickVoice(); }
+
+    if (window.speechSynthesis) {
+      refreshVoice();
+      speechSynthesis.onvoiceschanged = refreshVoice;
+    }
+
+    function unlockSpeech() {
+      if (!window.speechSynthesis) return;
+      try {
+        const dummy = new SpeechSynthesisUtterance(" ");
+        dummy.volume = 0;
+        dummy.rate = 1;
+        dummy.lang = "en-US";
+        if (chosenVoice) dummy.voice = chosenVoice;
+        speechSynthesis.speak(dummy);
+      } catch (e) {}
+    }
+
+    function speakNow(text) {
+      if (!window.speechSynthesis || !text) return;
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "en-US";
+      u.rate = 0.9;
+      u.pitch = 1.05;
+      u.volume = 1;
+      if (!chosenVoice) refreshVoice();
+      if (chosenVoice) u.voice = chosenVoice;
+      speechSynthesis.speak(u);
+    }
+
+    function speakAfter(text, delayMs) {
+      if (speakTimer) clearTimeout(speakTimer);
+      speakTimer = setTimeout(() => {
+        speakNow(text);
+        speakTimer = null;
+      }, delayMs);
+    }
+
+    function daySpeech(when, info) {
+      const intro = when + " is " + info.dayName + ".";
+      const rest = info.activities.map((a) => a.speech).join(" ");
+      return (intro + " " + rest).trim();
+    }
+
+    /* ---------- render ---------- */
+    let offset = 0;
+    const daysEl = document.getElementById("days");
+    const todayBtn = document.getElementById("todayBtn");
+
+    function animateIcon(el, anim) {
+      const cls = "anim-" + anim;
+      el.classList.remove(cls);
+      void el.offsetWidth;
+      el.classList.add(cls);
+      const done = () => el.classList.remove(cls);
+      el.addEventListener("animationend", done, { once: true });
+    }
+
+    function playActivity(cardEl, activity, extraSpeech) {
+      ensureAudio();
+      unlockSpeech();
+      const icon = cardEl.querySelector(".icon");
+      if (icon) animateIcon(icon, activity.anim);
+      const wait = playSound(activity.sound);
+      speakAfter(extraSpeech || activity.speech, wait);
+    }
+
+    function makeCard(activity) {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "card " + activity.color;
+      btn.setAttribute("aria-label", activity.label);
+      btn.innerHTML = '<span class="icon" aria-hidden="true">' + activity.icon + '</span>' +
+                      '<span class="label">' + activity.label + "</span>";
+      btn.addEventListener("click", () => playActivity(btn, activity));
+      return btn;
+    }
+
+    function makePanel(info, today, isSecondary) {
+      const when = whenLabel(info.key, today);
+      const panel = document.createElement("section");
+      panel.className = "day-panel" + (isSecondary ? " tomorrow-panel" : "");
+
+      const head = document.createElement("div");
+      head.className = "day-head";
+      head.setAttribute("role", "button");
+      head.tabIndex = 0;
+
+      const labels = document.createElement("div");
+      labels.className = "day-labels";
+      labels.innerHTML = '<div class="when">' + when + '</div>' +
+        '<div class="day-name">' + when + " is " + info.dayName + "</div>" +
+        '<div class="date-line">' + info.dateLine + "</div>";
+
+      const speakBtn = document.createElement("button");
+      speakBtn.type = "button";
+      speakBtn.className = "speak-btn";
+      speakBtn.setAttribute("aria-label", "Read " + when + " out loud");
+      speakBtn.textContent = "🔊";
+
+      const sentence = daySpeech(when, info);
+
+      function readDay(ev) {
+        if (ev) ev.stopPropagation();
+        ensureAudio();
+        unlockSpeech();
+        speakBtn.classList.add("playing");
+        setTimeout(() => speakBtn.classList.remove("playing"), 900);
+        panel.querySelectorAll(".card").forEach((card, i) => {
+          const icon = card.querySelector(".icon");
+          const activity = info.activities[i];
+          if (icon && activity) {
+            setTimeout(() => animateIcon(icon, activity.anim), i * 90);
+          }
+        });
+        const wait = playSound("intro");
+        speakAfter(sentence, wait);
+      }
+
+      speakBtn.addEventListener("click", readDay);
+      head.addEventListener("click", (e) => {
+        if (e.target === speakBtn || speakBtn.contains(e.target)) return;
+        ensureAudio();
+        unlockSpeech();
+        const wait = playSound("intro");
+        const line = when + " is " + info.dayName + ", " + info.dateLine + ".";
+        speakAfter(line, wait);
+      });
+
+      head.appendChild(labels);
+      head.appendChild(speakBtn);
+
+      const cards = document.createElement("div");
+      cards.className = "cards";
+      info.activities.forEach((a) => cards.appendChild(makeCard(a)));
+
+      panel.appendChild(head);
+      panel.appendChild(cards);
+      return panel;
+    }
+
+    function render() {
+      const today = todayKey();
+      const primaryKey = addDays(today, offset);
+      const primary = infoFor(primaryKey);
+      daysEl.innerHTML = "";
+      daysEl.appendChild(makePanel(primary, today, false));
+
+      if (offset === 0) {
+        const tomorrow = infoFor(addDays(today, 1));
+        daysEl.appendChild(makePanel(tomorrow, today, true));
+      }
+
+      todayBtn.classList.toggle("show", offset !== 0);
+    }
+
+    document.getElementById("prevBtn").addEventListener("click", () => {
+      ensureAudio();
+      unlockSpeech();
+      offset -= 1;
+      render();
+    });
+
+    document.getElementById("nextBtn").addEventListener("click", () => {
+      ensureAudio();
+      unlockSpeech();
+      offset += 1;
+      render();
+    });
+
+    todayBtn.addEventListener("click", () => {
+      ensureAudio();
+      unlockSpeech();
+      offset = 0;
+      render();
+    });
+
+    document.addEventListener("touchstart", () => { ensureAudio(); }, { passive: true });
+    document.addEventListener("click", () => { ensureAudio(); });
+
+    render();
+  </script>
+</body>
+</html>
